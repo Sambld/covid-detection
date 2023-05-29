@@ -1,4 +1,0 @@
-flask --app main run --host=0.0.0.0
-
-Amir99
-8i@P.i48w-rGPx8
