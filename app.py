@@ -55,6 +55,7 @@ def predict():
     congestion_or_runny_nose = request.form.get('congestion_or_runny_nose')
     sore_throat = request.form.get('sore_throat')
     nausea_or_vomiting = request.form.get('nausea_or_vomiting')
+    is_recheck = request.form.get('is_recheck')
 
     # Print the form data to the console
     print('fever_or_chills:', fever_or_chills)
@@ -66,6 +67,7 @@ def predict():
     print('congestion_or_runny_nose:', congestion_or_runny_nose)
     print('sore_throat:', sore_throat)
     print('nausea_or_vomiting:', nausea_or_vomiting)
+    print('is_recheck:', is_recheck)
 
     booleans = [fever_or_chills, shortness_of_breath, fatigue, muscle_or_body_aches, headache, loss_of_taste_or_smell, congestion_or_runny_nose, sore_throat, nausea_or_vomiting]
     true_count = booleans.count(True)
@@ -159,8 +161,22 @@ def predict():
 
     if (prediction and not predictionSVM) or (not prediction and  predictionSVM):
         # print("I need another cough sample to check, please cough again.")
-        message = "I need another cough sample to check, please cough again."
-        code = 2
+
+        if is_recheck:
+            if form:
+                # print("According to your symptoms and your cough sample, I hate to tell you that you are infected.")
+                message = "According to your symptoms and your cough sample, I hate to tell you that you are infected."
+                code = 0
+            else:
+                message = "Congratulation You are healthy, you have a standard cough sound, and for your symptoms, it's a regular fever."
+                code = 1
+        else:
+            message = "I need another cough sample to check, please cough again."
+            code = 2
+
+
+
+        
 
         
     # Return the response (e.g., a JSON response)
