@@ -24,6 +24,13 @@ model = tf.keras.models.load_model('my_scratch100.h5')
 #SVM_model = tf.keras.models.load_model("C:\\Users\\amirl\\Desktop\\phase two\\cnn models\\best_model_trained150.h5")
 #model = tf.keras.models.load_model("C:\\Users\\amirl\\Desktop\\phase two\\cnn models\\my_scratch100.h5")
 
+@app.route('/')
+def index():
+    # Main page contain covid detection
+    return 'Covid Detection'
+
+
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Handle file upload
