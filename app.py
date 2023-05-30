@@ -18,6 +18,8 @@ import tempfile
 
 app = Flask(__name__)
 CORS(app)
+
+
 # Load the pre-trained model
 SVM_model = tf.keras.models.load_model('best_model_trained150.h5')
 model = tf.keras.models.load_model('my_scratch100.h5')
@@ -136,7 +138,6 @@ def predict():
         print("The image is in the 'positive' class") 
         predictionSVM=1 
 
-    ##Return
 
 
     message = ""
@@ -159,10 +160,9 @@ def predict():
             # print("Congratulation You are healthy, have no symptoms and your cough sounds typical.") 
             message = "Congratulation You are healthy, have no symptoms and your cough sounds typical."
 
-    if (prediction and not predictionSVM) or (not prediction and  predictionSVM):
-        # print("I need another cough sample to check, please cough again.")
+    if prediction != predictionSVM:
 
-        if is_recheck:
+        if is_recheck == 'true':
             if form:
                 # print("According to your symptoms and your cough sample, I hate to tell you that you are infected.")
                 message = "According to your symptoms and your cough sample, I hate to tell you that you are infected."
