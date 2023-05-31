@@ -19,18 +19,14 @@ import tempfile
 app = Flask(__name__)
 CORS(app)
 
-
 # Load the pre-trained model
 SVM_model = tf.keras.models.load_model('best_model_trained150.h5')
 model = tf.keras.models.load_model('my_scratch100.h5')
-#SVM_model = tf.keras.models.load_model("C:\\Users\\amirl\\Desktop\\phase two\\cnn models\\best_model_trained150.h5")
-#model = tf.keras.models.load_model("C:\\Users\\amirl\\Desktop\\phase two\\cnn models\\my_scratch100.h5")
 
 @app.route('/')
 def index():
     # Main page contain covid detection
     return 'Covid Detection'
-
 
 
 @app.route('/predict', methods=['POST'])
@@ -71,13 +67,23 @@ def predict():
     print('nausea_or_vomiting:', nausea_or_vomiting)
     print('is_recheck:', is_recheck)
 
-    booleans = [fever_or_chills, shortness_of_breath, fatigue, muscle_or_body_aches, headache, loss_of_taste_or_smell, congestion_or_runny_nose, sore_throat, nausea_or_vomiting]
-    true_count = booleans.count(True)
-    false_count = booleans.count(False)
-    if true_count > false_count:
-        form = True
+    symptoms = [fever_or_chills, shortness_of_breath, fatigue, muscle_or_body_aches, headache,
+            loss_of_taste_or_smell, congestion_or_runny_nose, sore_throat, nausea_or_vomiting]
+
+    # Convert symptom values to boolean
+    symptoms = [symptom.lower() == "true" for symptom in symptoms]
+
+    num_true = sum(symptoms)  # Count the number of True values
+    num_false = len(symptoms) - num_true  # Count the number of False values
+
+    if num_true > num_false:
+        print("The majority of symptoms is True.")
+        form=True
     else:
-        form = False
+        print("The majority of symptoms is False.")
+        form=False
+    
+        
 
     #file preprocessing
     # Read input file
@@ -137,9 +143,7 @@ def predict():
     else:
         print("The image is in the 'positive' class") 
         predictionSVM=1 
-
-
-
+    
     message = ""
     code=0
     if prediction and predictionSVM:
